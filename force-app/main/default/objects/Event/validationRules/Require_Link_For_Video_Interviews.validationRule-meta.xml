@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Link_For_Video_Interviews</fullName>
+    <active>true</active>
+    <description>Requires a meeting link when an interview event is marked as video.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Interview_Format__c, &quot;Video&quot;),
+    ISBLANK(Link__c)
+)</errorConditionFormula>
+    <errorDisplayField>Link__c</errorDisplayField>
+    <errorMessage>Enter a meeting link for video interviews.</errorMessage>
+</ValidationRule>

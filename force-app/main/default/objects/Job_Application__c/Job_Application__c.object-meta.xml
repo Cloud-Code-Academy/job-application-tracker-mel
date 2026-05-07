@@ -36,6 +36,18 @@
         <actionName>Tab</actionName>
         <type>Default</type>
     </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>Job_Application_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>Job_Application_Record_Page</content>
+        <formFactor>Small</formFactor>
+        <type>Flexipage</type>
+    </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>Job_Application_Compact_Layout</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -51,8 +63,9 @@
     <externalSharingModel>Private</externalSharingModel>
     <label>Job Application</label>
     <nameField>
+        <displayFormat>JA-{00000}</displayFormat>
         <label>Job Application Name</label>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Job Applications</pluralLabel>
     <searchLayouts>
