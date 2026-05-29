@@ -9,10 +9,12 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
 
     public override void beforeInsert() {
         setPrimaryContactFromAccountContact(newJobApplicationList);
+        setPayValues(newJobApplicationList);
     }
 
     public override void beforeUpdate() {
         setPrimaryContactFromJobContacts(newJobApplicationList);
+        setPayValues(newJobApplicationList);
     }
     
     public override void afterInsert() {
@@ -48,16 +50,16 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
         Job_Application__c jobApp,
         Map<Id, Job_Application__c> oldJobApplicationsById
     ) {
-        // Only after insert: no oldMap
+
         if (oldJobApplicationsById == null) {
             return true;
         }
-        // After update condition 1
+
         Job_Application__c oldJobApp = oldJobApplicationsById.get(jobApp.Id);
         if (oldJobApp == null) {
             return true;
         }
-        // After update condition 2
+
         if (oldJobApp.Status__c != jobApp.Status__c) {
             return true;
         }
@@ -206,4 +208,12 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
             }
         }
     }
+
+    private static void setPayValues(List<Job_Application__c> newJobApplicationList) {
+        for (Job_Application__c jobApp : newJobApplicationList) {
+            JobApplicationSalaryHelper.populateSalaryFields(jobApp);
+        }
+    }
+
+    
 }

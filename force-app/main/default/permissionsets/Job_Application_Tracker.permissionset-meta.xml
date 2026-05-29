@@ -26,8 +26,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Job_Application__c.Federal_Income_Tax__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Job_Application__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Job_Application__c.Medicare_Withholding__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48,6 +58,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Job_Application__c.Salary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Job_Application__c.Social_Security_Tax__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Job_Application__c.Take_Home_Pay__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

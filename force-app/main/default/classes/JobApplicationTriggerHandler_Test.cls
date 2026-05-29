@@ -183,4 +183,88 @@ private with sharing class JobApplicationTriggerHandler_Test {
             'Changing to Applied should create the four Applied follow-up tasks'
         );
     }
+
+    @IsTest
+    static void testSetPayFields() {
+        Account account = new Account(Name = 'Pay Fields Test Account');
+        insert account;
+
+        Job_Application__c jobApp = new Job_Application__c(
+            Company_Name__c = account.Id,
+            Status__c = 'Saved',
+            Salary__c = 100000.00,
+            Title__c = 'Testing Pay Fields'
+        );
+        insert jobApp;
+
+        Job_Application__c jobAppAfterInsert = [
+            SELECT Id, Salary__c, Federal_Income_Tax__c, Social_Security_Tax__c, Medicare_Withholding__c, Take_Home_Pay__c
+            FROM Job_Application__c
+            WHERE Title__c = 'Testing Pay Fields'
+            LIMIT 1
+        ];
+
+        System.assertEquals(16914.00, jobAppAfterInsert.Federal_Income_Tax__c, 'Federal income tax should be populated');
+        System.assertEquals(6200.00, jobAppAfterInsert.Social_Security_Tax__c, 'Social Security tax should be populated');
+        System.assertEquals(1450.00, jobAppAfterInsert.Medicare_Withholding__c, 'Medicare withholding should be populated');
+        System.assertEquals(75436.00, jobAppAfterInsert.Take_Home_Pay__c, 'Take-home pay should be populated');
+    }
+
+    @IsTest
+    static void testSetPayFieldsOnSalaryUpdate() {
+        Account account = new Account(Name = 'Pay Fields Update Test Account');
+        insert account;
+
+        Job_Application__c jobApp = new Job_Application__c(
+            Company_Name__c = account.Id,
+            Status__c = 'Saved',
+            Salary__c = 100000.00,
+            Title__c = 'Testing Pay Fields Update'
+        );
+        insert jobApp;
+
+        jobApp.Salary__c = 80000.00;
+        update jobApp;
+
+        Job_Application__c jobAppAfterUpdate = [
+            SELECT Id, Salary__c, Federal_Income_Tax__c, Social_Security_Tax__c, Medicare_Withholding__c, Take_Home_Pay__c
+            FROM Job_Application__c
+            WHERE Id = :jobApp.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(12514.00, jobAppAfterUpdate.Federal_Income_Tax__c, 'Federal income tax should be recalculated');
+        System.assertEquals(4960.00, jobAppAfterUpdate.Social_Security_Tax__c, 'Social Security tax should be recalculated');
+        System.assertEquals(1160.00, jobAppAfterUpdate.Medicare_Withholding__c, 'Medicare withholding should be recalculated');
+        System.assertEquals(61366.00, jobAppAfterUpdate.Take_Home_Pay__c, 'Take-home pay should be recalculated');
+    }
+
+    @IsTest
+    static void testSetPayFieldsClearedWhenSalaryIsNull() {
+        Account account = new Account(Name = 'Pay Fields Null Test Account');
+        insert account;
+
+        Job_Application__c jobApp = new Job_Application__c(
+            Company_Name__c = account.Id,
+            Status__c = 'Saved',
+            Salary__c = 100000.00,
+            Title__c = 'Testing Null Pay Fields'
+        );
+        insert jobApp;
+
+        jobApp.Salary__c = null;
+        update jobApp;
+
+        Job_Application__c jobAppAfterUpdate = [
+            SELECT Id, Salary__c, Federal_Income_Tax__c, Social_Security_Tax__c, Medicare_Withholding__c, Take_Home_Pay__c
+            FROM Job_Application__c
+            WHERE Id = :jobApp.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(null, jobAppAfterUpdate.Federal_Income_Tax__c, 'Federal income tax should be cleared');
+        System.assertEquals(null, jobAppAfterUpdate.Social_Security_Tax__c, 'Social Security tax should be cleared');
+        System.assertEquals(null, jobAppAfterUpdate.Medicare_Withholding__c, 'Medicare withholding should be cleared');
+        System.assertEquals(null, jobAppAfterUpdate.Take_Home_Pay__c, 'Take-home pay should be cleared');
+    }
 }
