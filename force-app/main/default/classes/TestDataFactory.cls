@@ -1,3 +1,4 @@
+@IsTest
 public with sharing class TestDataFactory {
 
     public static List<Account> createAccounts() {
@@ -69,6 +70,35 @@ public with sharing class TestDataFactory {
         }
         insert jobContactList;
         return jobContactList;
+    }
+
+    public static List<Event> createEvents() {
+        List<Job_Application__c> jobApplicationList = createJobApplications();
+        Datetime firstStartTime = Datetime.newInstance(
+            Date.today().addDays(1),
+            Time.newInstance(10, 0, 0, 0)
+        );
+
+        List<Event> eventList = new List<Event>{
+            new Event(
+                Subject = 'Test Interview 1',
+                StartDateTime = firstStartTime,
+                EndDateTime = firstStartTime.addHours(1),
+                Location = 'Test Location 1',
+                WhatId = jobApplicationList[0].Id,
+                OwnerId = UserInfo.getUserId()
+            ),
+            new Event(
+                Subject = 'Test Interview 2',
+                StartDateTime = firstStartTime.addHours(2),
+                EndDateTime = firstStartTime.addHours(3),
+                Location = 'Test Location 2',
+                WhatId = jobApplicationList[1].Id,
+                OwnerId = UserInfo.getUserId()
+            )
+        };
+        insert eventList;
+        return eventList;
     }
 
 }

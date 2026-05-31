@@ -7,6 +7,14 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
         this.oldJobApplicationsById = (Map<Id, Job_Application__c>) Trigger.oldMap;
     }
 
+    public override void beforeInsert() {
+        setPrimaryContactFromAccountContact(newJobApplicationList);
+    }
+
+    public override void beforeUpdate() {
+        setPrimaryContactFromJobContacts(newJobApplicationList);
+    }
+    
     public override void afterInsert() {
         insertTasksOnStatusChange(newJobApplicationList, null);
     }
@@ -126,5 +134,76 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
             ActivityDate = Date.today(),
             Priority = 'Medium'
         );
+    }
+
+    private static void setPrimaryContactFromAccountContact(List<Job_Application__c> newJobApplicationList) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Job_Application__c jobApp : newJobApplicationList) {
+            if (jobApp.Primary_Contact__c == null) {
+                accountIds.add(jobApp.Company_Name__c);
+            }
+        }
+
+        Map<Id, Id> contactIdByAccountId = new Map<Id, Id>();
+        for (Contact accountContact : [
+            SELECT Id, AccountId
+            FROM Contact
+            WHERE AccountId IN :accountIds
+        ]) {
+            contactIdByAccountId.put(accountContact.AccountId, accountContact.Id);
+        }
+
+        for (Job_Application__c jobApp : newJobApplicationList) {
+            if (jobApp.Primary_Contact__c == null && contactIdByAccountId.containsKey(jobApp.Company_Name__c)) {
+                jobApp.Primary_Contact__c = contactIdByAccountId.get(jobApp.Company_Name__c);
+            }
+        }
+    }
+
+    private static void setPrimaryContactFromJobContacts(List<Job_Application__c> newJobApplicationList) {
+        List<Job_Application__c> jobAppsWithoutPrimaryContact = new List<Job_Application__c>();
+
+        for (Job_Application__c jobApp : newJobApplicationList) {
+            if (jobApp.Primary_Contact__c == null) {
+                jobAppsWithoutPrimaryContact.add(jobApp);
+            }
+        }
+
+        Map<Id, Id> companiesByJobApp = new Map<Id, Id>();
+
+        for (Job_Application__c jobApp : jobAppsWithoutPrimaryContact) {
+            companiesByJobApp.put(jobApp.Id, jobApp.Company_Name__c);
+        }
+
+        List<Job_Contact__c> jobContacts = [
+            SELECT Id, Job_Application__c, Contact__c
+            FROM Job_Contact__c
+            WHERE Job_Application__c IN :companiesByJobApp.keySet()
+        ];
+
+        Map<Id, Id> jobContactIdByJobAppId = new Map<Id, Id>();
+
+        for (Job_Contact__c jobContact : jobContacts) {
+            jobContactIdByJobAppId.put(jobContact.Job_Application__c, jobContact.Contact__c);
+        }
+
+        List<Contact> contactsInCompanies = [
+            SELECT Id, AccountId
+            FROM Contact
+            WHERE AccountId IN :companiesByJobApp.values()
+        ];
+
+        Map<Id, Id> contactIdByAccountId = new Map<Id, Id>(); 
+        for (Contact contact : contactsInCompanies) {
+            contactIdByAccountId.put(contact.AccountId, contact.Id);
+        }
+
+        for (Job_Application__c jobApp : jobAppsWithoutPrimaryContact) {
+            if (jobContactIdByJobAppId.containsKey(jobApp.Id) == true) {
+                jobApp.Primary_Contact__c = jobContactIdByJobAppId.get(jobApp.Id);
+            } else if (contactIdByAccountId.containsKey(jobApp.Company_Name__c)) {
+                jobApp.Primary_Contact__c = contactIdByAccountId.get(jobApp.Company_Name__c);
+            }
+        }
     }
 }
