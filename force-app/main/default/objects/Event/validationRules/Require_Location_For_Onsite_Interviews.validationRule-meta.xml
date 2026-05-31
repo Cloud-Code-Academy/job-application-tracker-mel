@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Location_For_Onsite_Interviews</fullName>
+    <active>true</active>
+    <description>Requires a location when an interview event is marked as onsite.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Interview_Format__c, &quot;Onsite&quot;),
+    ISBLANK(Location)
+)</errorConditionFormula>
+    <errorDisplayField>Location</errorDisplayField>
+    <errorMessage>Enter a location for onsite interviews.</errorMessage>
+</ValidationRule>

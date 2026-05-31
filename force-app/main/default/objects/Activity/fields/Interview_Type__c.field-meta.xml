@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Rating__c</fullName>
-    <inlineHelpText>5 is highest, 1 is lowest</inlineHelpText>
-    <label>Rating</label>
+    <fullName>Interview_Type__c</fullName>
+    <label>Interview Type</label>
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
@@ -10,29 +9,34 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>1</fullName>
+                <fullName>Recruiter Screen</fullName>
                 <default>false</default>
-                <label>1</label>
+                <label>Recruiter Screen</label>
             </value>
             <value>
-                <fullName>2</fullName>
+                <fullName>Hiring Manager</fullName>
                 <default>false</default>
-                <label>2</label>
+                <label>Hiring Manager</label>
             </value>
             <value>
-                <fullName>3</fullName>
+                <fullName>Technical</fullName>
                 <default>false</default>
-                <label>3</label>
+                <label>Technical</label>
             </value>
             <value>
-                <fullName>4</fullName>
+                <fullName>Behavioral</fullName>
                 <default>false</default>
-                <label>4</label>
+                <label>Behavioral</label>
             </value>
             <value>
-                <fullName>5</fullName>
+                <fullName>Panel</fullName>
                 <default>false</default>
-                <label>5</label>
+                <label>Panel</label>
+            </value>
+            <value>
+                <fullName>Final</fullName>
+                <default>false</default>
+                <label>Final</label>
             </value>
         </valueSetDefinition>
     </valueSet>

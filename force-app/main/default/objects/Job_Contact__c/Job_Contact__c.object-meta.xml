@@ -38,20 +38,20 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <content>Job_Application_Record_Page</content>
+        <content>Job_Contact_Record_Page</content>
         <formFactor>Large</formFactor>
         <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <content>Job_Application_Record_Page</content>
+        <content>Job_Contact_Record_Page</content>
         <formFactor>Small</formFactor>
         <type>Flexipage</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>Job_Application_Compact_Layout</compactLayoutAssignment>
+    <compactLayoutAssignment>Job_Contact_Compact_Layout</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
@@ -60,27 +60,29 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
-    <label>Job Application</label>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <label>Job Contact</label>
     <nameField>
-        <displayFormat>JA-{00000}</displayFormat>
-        <label>Job Application Name</label>
+        <displayFormat>JC-{00000}</displayFormat>
+        <label>Job Contact Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Job Applications</pluralLabel>
+    <pluralLabel>Job Contacts</pluralLabel>
     <searchLayouts>
-        <customTabListAdditionalFields>Job_Application__c.Status__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Job_Application__c.Company_Name__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Job_Application__c.Title__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Job_Application__c.Application_Date__c</customTabListAdditionalFields>
-        <lookupDialogsAdditionalFields>Job_Application__c.Company_Name__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Job_Application__c.Title__c</lookupDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Job_Application__c.Company_Name__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Job_Application__c.Title__c</lookupPhoneDialogsAdditionalFields>
-        <searchResultsAdditionalFields>Job_Application__c.Company_Name__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Job_Application__c.Title__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Job_Application__c.Status__c</searchResultsAdditionalFields>
+        <customTabListAdditionalFields>Job_Contact__c.Job_Application__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Job_Contact__c.Contact__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Job_Contact__c.Hiring_Role__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Job_Contact__c.Primary_Contact__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Job_Contact__c.Job_Application__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Job_Contact__c.Contact__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Job_Contact__c.Hiring_Role__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Job_Contact__c.Job_Application__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Job_Contact__c.Contact__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Job_Contact__c.Hiring_Role__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Job_Contact__c.Job_Application__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Job_Contact__c.Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Job_Contact__c.Hiring_Role__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>Private</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

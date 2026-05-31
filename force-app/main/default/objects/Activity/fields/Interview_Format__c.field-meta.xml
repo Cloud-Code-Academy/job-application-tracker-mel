@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Rating__c</fullName>
-    <inlineHelpText>5 is highest, 1 is lowest</inlineHelpText>
-    <label>Rating</label>
+    <fullName>Interview_Format__c</fullName>
+    <inlineHelpText>Use Link for video interviews and Location for onsite interviews.</inlineHelpText>
+    <label>Interview Format</label>
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
@@ -10,29 +10,29 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>1</fullName>
+                <fullName>Phone</fullName>
                 <default>false</default>
-                <label>1</label>
+                <label>Phone</label>
             </value>
             <value>
-                <fullName>2</fullName>
+                <fullName>Video</fullName>
                 <default>false</default>
-                <label>2</label>
+                <label>Video</label>
             </value>
             <value>
-                <fullName>3</fullName>
+                <fullName>Onsite</fullName>
                 <default>false</default>
-                <label>3</label>
+                <label>Onsite</label>
             </value>
             <value>
-                <fullName>4</fullName>
+                <fullName>Take-home</fullName>
                 <default>false</default>
-                <label>4</label>
+                <label>Take-home</label>
             </value>
             <value>
-                <fullName>5</fullName>
+                <fullName>Other</fullName>
                 <default>false</default>
-                <label>5</label>
+                <label>Other</label>
             </value>
         </valueSetDefinition>
     </valueSet>
