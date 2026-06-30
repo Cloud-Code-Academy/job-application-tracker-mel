@@ -1,0 +1,17 @@
+.salary-input-container {
+  max-width: 16rem;
+  padding-block-end: var(--lwc-spacingSmall);
+  padding-inline: var(--lwc-spacingSmall);
+}
+
+.results-table-container {
+  overflow-x: auto;
+  padding-block-end: var(--lwc-spacingSmall);
+  padding-inline: var(--lwc-spacingSmall);
+}
+
+.save-button-container {
+  padding-block-end: var(--lwc-spacingSmall);
+  padding-inline: var(--lwc-spacingSmall);
+  text-align: end;
+}

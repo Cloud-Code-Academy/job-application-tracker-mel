@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>2025 Bracket 6</label>
+    <protected>false</protected>
+    <values>
+        <field>Base_Tax__c</field>
+        <value xsi:type="xsd:double">57231.00</value>
+    </values>
+    <values>
+        <field>Bracket_Number__c</field>
+        <value xsi:type="xsd:double">6</value>
+    </values>
+    <values>
+        <field>Filing_Status__c</field>
+        <value xsi:type="xsd:string">Single</value>
+    </values>
+    <values>
+        <field>Lower_Bound__c</field>
+        <value xsi:type="xsd:double">250525.00</value>
+    </values>
+    <values>
+        <field>Rate__c</field>
+        <value xsi:type="xsd:double">0.3500</value>
+    </values>
+    <values>
+        <field>Tax_Year__c</field>
+        <value xsi:type="xsd:double">2025</value>
+    </values>
+    <values>
+        <field>Upper_Bound__c</field>
+        <value xsi:type="xsd:double">626350.00</value>
+    </values>
+</CustomMetadata>

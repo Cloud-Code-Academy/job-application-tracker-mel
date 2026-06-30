@@ -1,0 +1,47 @@
+<template>
+  <lightning-card title="Take Home Pay Calculator">
+    <div class="salary-input-container">
+      <lightning-input
+        type="number"
+        label="Salary"
+        value={salary}
+        min="0"
+        step="0.01"
+        onchange={handleSalaryChange}
+      ></lightning-input>
+    </div>
+    <div class="results-table-container">
+      <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+          <tr>
+            <th scope="col">Pay Period</th>
+            <th scope="col">Gross Pay</th>
+            <th scope="col">Federal Tax</th>
+            <th scope="col">Social Security</th>
+            <th scope="col">Medicare</th>
+            <th scope="col">Take Home Pay</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={rows} for:item="row">
+            <tr key={row.label}>
+              <td>{row.label}</td>
+              <td>{row.salary}</td>
+              <td>{row.federalTax}</td>
+              <td>{row.socialSecurity}</td>
+              <td>{row.medicare}</td>
+              <td>{row.takeHome}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+    <div class="save-button-container">
+      <lightning-button
+        label="Save to Record"
+        variant="brand"
+        onclick={handleSaveToRecord}
+      ></lightning-button>
+    </div>
+  </lightning-card>
+</template>
