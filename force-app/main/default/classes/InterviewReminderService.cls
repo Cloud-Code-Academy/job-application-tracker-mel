@@ -1,5 +1,13 @@
 public with sharing class InterviewReminderService {
 
+/* Feedback - try building out this on the stale job functionality:
+- How many records can we mark as stale if we call directly from Service class? 10K - can query 50K, but can only update 10K
+-- Pattern to use is Schedulable Batchable or Schedulable Queuable (that would be more relevant if time-sensitive)
+- Schedulable opens up a new set of transaction limits: get limits only once for that
+- Batch job was traditional guidance: not time sensitive, simple, feed it a query and it performs operation
+-- Batch job can query as many as you want, 2K at a time
+*/
+
     public static void sendEmail() {
         List<Event> tomorrowsEvents = getTomorrowsEvents();
 

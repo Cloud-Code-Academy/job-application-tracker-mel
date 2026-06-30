@@ -1,7 +1,9 @@
 public with sharing class JobApplicationSalaryHelper {
-    
+    private static final Decimal DEFAULT_FEDERAL_TAX_YEAR = 2025;
+    private static final String DEFAULT_FILING_STATUS = 'Single';
     private static final Decimal SOCIAL_SECURITY_TAX_RATE = 0.062;
     private static final Decimal MEDICARE_WITHHOLDING_RATE = 0.0145;
+
     public Decimal salary;
 
     public static void populateSalaryFields(Job_Application__c jobApplication) {
@@ -13,10 +15,15 @@ public with sharing class JobApplicationSalaryHelper {
             return;
         }
 
-        jobApplication.Federal_Income_Tax__c = calculateFederalTax(jobApplication.Salary__c);
-        jobApplication.Social_Security_Tax__c = calculateSocialSecurityTax(jobApplication.Salary__c);
-        jobApplication.Medicare_Withholding__c = calculateMedicareWithholding(jobApplication.Salary__c);
-        jobApplication.Take_Home_Pay__c = calculateTakeHomePay(jobApplication.Salary__c);
+        Decimal salary = jobApplication.Salary__c;
+        Decimal federalTax = calculateFederalTax(salary);
+        Decimal socialSecurityTax = calculateSocialSecurityTax(salary);
+        Decimal medicareWithholding = calculateMedicareWithholding(salary);
+
+        jobApplication.Federal_Income_Tax__c = federalTax;
+        jobApplication.Social_Security_Tax__c = socialSecurityTax;
+        jobApplication.Medicare_Withholding__c = medicareWithholding;
+        jobApplication.Take_Home_Pay__c = salary - federalTax - socialSecurityTax - medicareWithholding;
     }
 
     public static Decimal calculateTakeHomePay(Decimal salary) {
@@ -28,28 +35,32 @@ public with sharing class JobApplicationSalaryHelper {
     }
 
     private static Decimal calculateFederalTax(Decimal salary) {
-        if (salary <= 11925) {
-        return salary * 0.1;
-        } else if (salary <= 48475) {
-        return 1192.5 + (salary - 11925) * 0.12;
-        } else if (salary <= 103350) {
-        return 5578.5 + (salary - 48475) * 0.22;
-        } else if (salary <= 197300) {
-        return 17651 + (salary - 103350) * 0.24;
-        } else if (salary <= 250525) {
-        return 40199 + (salary - 197300) * 0.32;
-        } else if (salary <= 626350) {
-        return 57231 + (salary - 250525) * 0.35;
-        } else {
-        return 188769.75 + (salary - 626350) * 0.37;
+        for (Federal_Tax_Bracket__mdt bracket : Federal_Tax_Bracket__mdt.getAll().values()) {
+            Boolean isCorrectTaxYear = bracket.Tax_Year__c == DEFAULT_FEDERAL_TAX_YEAR;
+            Boolean isCorrectFilingStatus = bracket.Filing_Status__c == DEFAULT_FILING_STATUS;
+            Boolean isAboveLowerBound = salary >= bracket.Lower_Bound__c;
+            Boolean isBelowUpperBound = bracket.Upper_Bound__c == null || salary <= bracket.Upper_Bound__c;
+
+            if (isCorrectTaxYear && isCorrectFilingStatus && isAboveLowerBound && isBelowUpperBound) {
+                return bracket.Base_Tax__c + ((salary - bracket.Lower_Bound__c) * bracket.Rate__c);
+            }
         }
-  }
 
-  private static Decimal calculateSocialSecurityTax(Decimal salary) {
-    return salary * SOCIAL_SECURITY_TAX_RATE;
-  }
+        throw new SalaryCalculationException(
+            'No federal tax bracket found for salary ' + salary +
+            ', tax year ' + DEFAULT_FEDERAL_TAX_YEAR +
+            ', filing status ' + DEFAULT_FILING_STATUS + '.'
+        );
+    }
 
-  private static Decimal calculateMedicareWithholding(Decimal salary) {
-    return salary * MEDICARE_WITHHOLDING_RATE;
-  }
+    private static Decimal calculateSocialSecurityTax(Decimal salary) {
+        return salary * SOCIAL_SECURITY_TAX_RATE;
+    }
+
+    private static Decimal calculateMedicareWithholding(Decimal salary) {
+        return salary * MEDICARE_WITHHOLDING_RATE;
+    }
+
+    private class SalaryCalculationException extends Exception {
+    }
 }
